@@ -1,5 +1,27 @@
-choco install -y ./packages/misc.config
-choco install -y ./packages/gaming.config
-choco install -y ./packages/cli.config
-choco install -y ./packages/dev.config
-# choco install -y ./packages/python.config
+# Base URL for the packages
+$baseUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/packages/"
+
+# List of packages to install
+$packages = @(
+    "misc.config",
+    "gaming.config",
+    "cli.config",
+    "dev.config"
+    # "python.config"
+)
+
+$out = [System.IO.Path]::GetTempPath()
+
+$out = $out + "//choco//" # Path to the directory where the packages will be downloaded
+# Make sure the directory exists
+if (-not (Test-Path $out)) {
+    New-Item -ItemType Directory -Path $out
+}
+
+foreach ($package in $packages) {
+    $dest = $out + $package
+    $url = $baseUrl + $package
+    Invoke-WebRequest -Uri $url -OutFile $dest
+    choco install -y $dest
+}
+

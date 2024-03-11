@@ -12,6 +12,14 @@
   ## Set pwsh as default in Terminal
   New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Value 0 -Type DWord -Force
 
+  ## Set Windows Terminal as default terminal
+  New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Value 0 -Type DWord -Force
+
+  ## Download and install Fira Code Nerd Font
+
+
+  ## Set config for oh-my-posh
+
 
 # Configure Taskbar
 

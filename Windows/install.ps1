@@ -6,7 +6,8 @@ $packages = @(
     "misc.config",
     "gaming.config",
     "cli.config",
-    "dev.config"
+    "dev.config",
+    "design.config"
     # "python.config"
 )
 

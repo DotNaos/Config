@@ -19,7 +19,7 @@
 
 
   ## Set config for oh-my-posh
-
+  oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/cloud-context.omp.json" | Invoke-Expression
 
 # Configure Taskbar
 

@@ -39,12 +39,12 @@ Or if you have your own config url:
 
 
 3. Use debloat Tools
-[1](https://github.com/LeDragoX/Win-Debloat-Tools)
-[2](https://github.com/Raphire/Win11Debloat)
+- [Win-Debloat-Tools](https://github.com/LeDragoX/Win-Debloat-Tools)
+- [Win11Debloat](https://github.com/Raphire/Win11Debloat)
+
+
 
 3. Run the [Config Script](Windows/config.ps1) to set the settings
-
- 
 ```powershell
   iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.ps1'))
 ```

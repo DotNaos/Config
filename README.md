@@ -39,7 +39,7 @@ Or if you have your own config url:
 
 
 3. Use debloat Tools
-- [Win-Debloat-Tools](https://github.com/LeDragoX/Win-Debloat-Tools)
+
 - [Win11Debloat](https://github.com/Raphire/Win11Debloat)
 
 

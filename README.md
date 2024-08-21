@@ -13,7 +13,6 @@
 - [ ] Arc browser
 
 ### Scripts
-- [ ] SpotX
 - [ ] Vencord
 
 </details>
@@ -52,7 +51,10 @@ Or if you have your own config url:
 Same for the custom config:
 ```powershell
   iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/DotNaos/Config/main/Windows/custom_config.ps1'))
-``` 
+```
+
+4. Common Problems
+- [Time not in sync after OS switch](https://answers.microsoft.com/en-us/windows/forum/all/automatic-windows-resync-time-after-reboot-setup/7a762b13-6a90-4731-9287-bdab328da78c)
 
 ### Linux
 ( WIP )

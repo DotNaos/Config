@@ -57,7 +57,8 @@ Same for the custom config:
 - [Time not in sync after OS switch](https://answers.microsoft.com/en-us/windows/forum/all/automatic-windows-resync-time-after-reboot-setup/7a762b13-6a90-4731-9287-bdab328da78c)
 
 ### Linux
-( WIP )
+2. Common Problems
+- [Add Windows to Grub Boot](https://youtu.be/xBPn0fF8bTY?si=NY1biG0l_pI7pWGs)
 
 ### ( MACOS )
 ( WIP )

@@ -118,6 +118,9 @@ function Install-SinglePackage {
     switch ($manager) {
         "choco" { 
             if ($script:isAdmin -or -not $userInstall) {
+                # Enable global confirmation for Chocolatey
+                choco feature enable -n allowGlobalConfirmation
+
                 choco install -y $packageId $userFlag
             } else {
                 Write-Host "Skipping ${packageId}: Chocolatey requires admin privileges for system-wide installations." -ForegroundColor Yellow

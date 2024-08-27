@@ -43,7 +43,8 @@
             },
             {
                 "name": "Python",
-                "choco": "python"
+                "choco": "python",
+                 "userInstall": true
             },
             {
                 "name": "Rust",
@@ -116,6 +117,14 @@
         ],
         "misc": [
             {
+                "name": "Zen Browser",
+                 "directDownload": "https://github.com/zen-browser/desktop/releases/latest/download/zen.installer.exe"
+            },
+                        {
+                "name": "Arc Browser",
+                 "directDownload": "https://releases.arc.net/windows/ArcInstaller.exe"
+            },
+            {
                 "name": "File Converter",
                 "choco": "file-converter"
             },
@@ -130,7 +139,7 @@
             },
             {
                 "name": "Parsec",
-                "choco": "parsec"
+                "winget": "Parsec.Parsec"
             },
             {
                 "name": "Spotify",

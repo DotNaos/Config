@@ -1,0 +1,158 @@
+{
+    "categories": {
+        "dev": [
+            {
+                "name": "Visual Studio 2022 Community Preview",
+                "winget": "Microsoft.VisualStudio.2022.Community.Preview",
+                "extra": true
+            },
+            {
+                "name": "Vscode",
+                "choco": "vscode"
+            },
+            {
+                "name": "Jetbrainstoolbox",
+                "choco": "jetbrainstoolbox",
+                "extra": true
+            },
+            {
+                "name": "Neovim",
+                "choco": "neovim"
+            }
+        ],
+        "CLI": [
+            {
+                "name": "Chocolatey Core.Extension",
+                "choco": "chocolatey-core.extension"
+            },
+            {
+                "name": "Git",
+                "choco": "git"
+            },
+            {
+                "name": "Msys2",
+                "choco": "msys2"
+            },
+            {
+                "name": "Mingw",
+                "choco": "mingw"
+            },
+            {
+                "name": "Temurin",
+                "choco": "temurin"
+            },
+            {
+                "name": "Python",
+                "choco": "python"
+            },
+            {
+                "name": "Rust",
+                "choco": "rust"
+            },
+            {
+                "name": "Nodejs",
+                "choco": "nodejs"
+            },
+            {
+                "name": "Oh My Posh",
+                "choco": "oh-my-posh"
+            },
+            {
+                "name": "Pwsh",
+                "choco": "pwsh"
+            },
+            {
+                "name": "Miktex",
+                "choco": "miktex",
+                "extra": true
+            },
+            {
+                "name": "Fzf",
+                "choco": "fzf",
+                "extra": true
+            },
+            {
+                "name": "Ripgrep",
+                "choco": "ripgrep",
+                "extra": true
+            },
+            {
+                "name": "Bat",
+                "choco": "bat",
+                "extra": true
+            }
+        ],
+        "design": [
+            {
+                "name": "Orcaslicer",
+                "choco": "orcaslicer"
+            },
+            {
+                "name": "Autodesk Fusion360",
+                "choco": "autodesk-fusion360"
+            },
+            {
+                "name": "Blender",
+                "choco": "blender",
+                "extra": true
+            },
+            {
+                "name": "Figma",
+                "choco": "figma",
+                "extra": true
+            }
+        ],
+        "games": [
+            {
+                "name": "Epicgameslauncher",
+                "choco": "epicgameslauncher",
+                "extra": true
+            },
+            {
+                "name": "Steam",
+                "choco": "steam",
+                "extra": true
+            }
+        ],
+        "misc": [
+            {
+                "name": "File Converter",
+                "choco": "file-converter"
+            },
+            {
+                "name": "Discord",
+                "choco": "discord"
+            },
+            {
+                "name": "Iconviewer",
+                "choco": "iconviewer",
+                "extra": true
+            },
+            {
+                "name": "Parsec",
+                "choco": "parsec"
+            },
+            {
+                "name": "Spotify",
+                "choco": "spotify"
+            },
+            {
+                "name": "Nerd Fonts Firacode",
+                "choco": "nerd-fonts-firacode"
+            },
+            {
+                "name": "Fxsound",
+                "choco": "fxsound"
+            },
+            {
+                "name": "1Password Beta",
+                "winget": "AgileBits.1Password.Beta"
+            },
+            {
+                "name": "Rode Central",
+                "choco": "rode-central",
+                "extra": true
+            }
+        ]
+    }
+}

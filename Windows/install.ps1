@@ -200,4 +200,4 @@ foreach ($category in $categories) {
     }
 }
 
-Write-Host "Installation complete!"
+Write-Host "Installation complete! Install remaining packages manually from '~/Downloads'"

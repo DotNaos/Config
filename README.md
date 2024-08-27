@@ -1,5 +1,10 @@
 <h1>Config</h1>
 
+<!-- TODO: -->
+
+<!-- In Configuration script, prompt the user for credentials like github name, email etc. and the files are then created. -->
+<!-- Incorporate the common fixes into the config script.  -->
+
 ## Windows
 ### Installation
 
@@ -17,7 +22,6 @@ Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Dot
 ```
 
 ### Configuration
-<!-- TODO -->
 1. Copy config files and configure ( WIP )
 ```pwsh
 Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DotNaos/config/main/Windows/configure.ps1" -UseBasicParsing).Content

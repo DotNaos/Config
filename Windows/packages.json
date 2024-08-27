@@ -120,7 +120,7 @@
                 "name": "Zen Browser",
                  "directDownload": "https://github.com/zen-browser/desktop/releases/latest/download/zen.installer.exe"
             },
-                        {
+            {
                 "name": "Arc Browser",
                  "directDownload": "https://releases.arc.net/windows/ArcInstaller.exe"
             },

@@ -120,7 +120,7 @@ function Install-SinglePackage {
             if ($script:isAdmin -or -not $userInstall) {
                 choco install -y $packageId $userFlag
             } else {
-                Write-Host "Skipping $packageId: Chocolatey requires admin privileges for system-wide installations." -ForegroundColor Yellow
+                Write-Host "Skipping ${packageId}: Chocolatey requires admin privileges for system-wide installations." -ForegroundColor Yellow
             }
         }
         "winget" { winget install -e --id $packageId $userFlag }

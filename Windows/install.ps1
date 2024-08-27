@@ -1,3 +1,15 @@
+# Check for administrator privileges
+$script:isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $script:isAdmin) {
+    Write-Host "`n[WARNING] This script is not running with administrator privileges." -ForegroundColor DarkYellow
+    Write-Host "Some installations may fail. Consider re-running as administrator for full functionality.`n" -ForegroundColor DarkYellow
+    $continue = Read-Host "Do you want to continue anyway? (y/n)"
+    if ($continue -ne 'y') {
+        exit
+    }
+}
+
 # Default base URL for the package list
 $defaultPackageListUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/packages.json"
 
@@ -63,45 +75,20 @@ function Ensure-PackageManager {
     switch ($manager) {
         "choco" {
             if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-                Set-ExecutionPolicy Bypass -Scope Process -Force
-                [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-                Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+                if ($script:isAdmin) {
+                    Set-ExecutionPolicy Bypass -Scope Process -Force
+                    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+                    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+                } else {
+                    Write-Host "Chocolatey is not installed and requires admin privileges to install. Please install Chocolatey manually." -ForegroundColor Yellow
+                    exit 1
+                }
             }
         }
         "winget" {
             if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-                Write-Host "Winget is not installed. Attempting to install..."
-
-                # Get latest download url
-                $URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-                $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
-                    Select-Object -ExpandProperty "assets" |
-                    Where-Object "browser_download_url" -Match '.msixbundle' |
-                    Select-Object -ExpandProperty "browser_download_url"
-
-                # Download
-                $setupPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "WingetSetup.msix")
-                Invoke-WebRequest -Uri $URL -OutFile $setupPath -UseBasicParsing
-
-                # Install
-                try {
-                    Add-AppxPackage -Path $setupPath
-                    Write-Host "Winget installed successfully."
-                }
-                catch {
-                    Write-Host "Failed to install Winget. Error: $_"
-                    exit 1
-                }
-                finally {
-                    # Clean up
-                    Remove-Item $setupPath -ErrorAction SilentlyContinue
-                }
-
-                # Verify installation
-                if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-                    Write-Host "Winget installation failed. Please install it manually from the Microsoft Store."
-                    exit 1
-                }
+                Write-Host "Winget is not installed. Please install it manually from the Microsoft Store or via Windows Update." -ForegroundColor Yellow
+                exit 1
             }
         }
         "scoop" {
@@ -116,11 +103,27 @@ function Ensure-PackageManager {
 function Install-SinglePackage {
     param (
         [string]$manager,
-        [string]$packageId
+        [string]$packageId,
+        [bool]$userInstall
     )
+    $userFlag = if ($userInstall) {
+        switch ($manager) {
+            "choco" { "--user" }
+            "winget" { "--user" }
+            "scoop" { "" }  # Scoop always installs for the current user
+            default { "" }
+        }
+    } else { "" }
+
     switch ($manager) {
-        "choco" { choco install -y $packageId }
-        "winget" { winget install -e --id $packageId }
+        "choco" { 
+            if ($script:isAdmin -or -not $userInstall) {
+                choco install -y $packageId $userFlag
+            } else {
+                Write-Host "Skipping $packageId: Chocolatey requires admin privileges for system-wide installations." -ForegroundColor Yellow
+            }
+        }
+        "winget" { winget install -e --id $packageId $userFlag }
         "scoop" { scoop install $packageId }
     }
 }
@@ -151,11 +154,12 @@ function Install-Packages {
 
     foreach ($package in $packages) {
         $installed = $false
+        $userInstall = $package.userInstall -eq $true
 
         # Try to install with the primary manager first
         if ($package.$primaryManager) {
             Write-Host "Installing $($package.name) using $primaryManager"
-            Install-SinglePackage -manager $primaryManager -packageId $package.$primaryManager
+            Install-SinglePackage -manager $primaryManager -packageId $package.$primaryManager -userInstall $userInstall
             $installed = $true
         }
 
@@ -164,7 +168,7 @@ function Install-Packages {
             foreach ($manager in $managers) {
                 if ($manager -ne $primaryManager -and $package.$manager) {
                     Write-Host "Fallback: Installing $($package.name) using $manager"
-                    Install-SinglePackage -manager $manager -packageId $package.$manager
+                    Install-SinglePackage -manager $manager -packageId $package.$manager -userInstall $userInstall
                     $installed = $true
                     break
                 }

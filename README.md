@@ -2,6 +2,7 @@
 
 <!-- TODO: -->
 
+<!-- Fix user install in install script -->
 <!-- In Configuration script, prompt the user for credentials like github name, email etc. and the files are then created. -->
 <!-- Incorporate the common fixes into the config script.  -->
 

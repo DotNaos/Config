@@ -84,6 +84,9 @@ function Ensure-PackageManager {
                     exit 1
                 }
             }
+
+            # Enable global confirmation for Chocolatey
+            choco feature enable -n allowGlobalConfirmation
         }
         "winget" {
             if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
@@ -98,6 +101,7 @@ function Ensure-PackageManager {
         }
     }
 }
+
 
 # Function to install a single package
 function Install-SinglePackage {
@@ -118,9 +122,6 @@ function Install-SinglePackage {
     switch ($manager) {
         "choco" { 
             if ($script:isAdmin -or -not $userInstall) {
-                # Enable global confirmation for Chocolatey
-                choco feature enable -n allowGlobalConfirmation
-
                 choco install -y $packageId $userFlag
             } else {
                 Write-Host "Skipping ${packageId}: Chocolatey requires admin privileges for system-wide installations." -ForegroundColor Yellow
@@ -207,4 +208,4 @@ foreach ($category in $categories) {
     }
 }
 
-Write-Host "Installation complete! Install remaining packages manually from '~/Downloads'"
+Write-Host "Installation complete! Install remaining packages manually from '~/Downloads/Installers'"

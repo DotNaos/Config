@@ -43,7 +43,7 @@
             },
             {
                 "name": "Python",
-                "choco": "python",
+                "winget": "Python.Python.3.12",
                  "userInstall": true
             },
             {

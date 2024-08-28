@@ -130,7 +130,7 @@
             },
             {
                 "name": "Discord",
-                "choco": "discord"
+                "winget": "discord.discord"
             },
             {
                 "name": "Iconviewer",

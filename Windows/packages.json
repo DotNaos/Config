@@ -149,6 +149,10 @@
                  "winget": "TheBrowserCompany.Arc"
             },
             {
+                "name": "Revo Uninstaller",
+                "winget": "RevoUninstaller.RevoUninstaller"
+            }
+            {
                 "name": "Nvidia App",
                 "directDownload": "https://de.download.nvidia.com/nvapp/client/10.0.2.210/NVIDIA_app_beta_v10.0.2.210.exe",
                 "extra": true

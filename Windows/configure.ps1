@@ -1,71 +1,53 @@
-# URL of the config.json file in the same repository
+# Define the URL for the config.json file
 $configUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
 
-# Download and parse config.json
-$configJson = Invoke-RestMethod -Uri $configUrl
+# Download the config.json file
+$configJson = Invoke-WebRequest -Uri $configUrl -UseBasicParsing | Select-Object -ExpandProperty Content
 
-# Function to clone a Git repository
-function Clone-Repo {
-    param (
-        [string]$url,
-        [string]$path
-    )
+# Parse the JSON content
+$config = $configJson | ConvertFrom-Json
 
-    Write-Host "Cloning repository from $url to $path..."
-    git clone $url $path
-    Write-Host "Repository cloned successfully."
+# Function to clone a git repository
+function Clone-GitRepo($repoUrl, $destinationPath) {
+    # Ensure the destination directory exists
+    if (-not (Test-Path -Path $destinationPath)) {
+        New-Item -Path $destinationPath -ItemType Directory -Force
+    }
+
+    # Clone the git repository
+    git clone $repoUrl $destinationPath
 }
 
 # Function to download a file
-function Download-File {
-    param (
-        [string]$url,
-        [string]$path
-    )
-
-    Write-Host "Downloading file from $url to $path..."
-    
+function Download-File($fileUrl, $destinationPath) {
     # Ensure the destination directory exists
-    $destDir = Split-Path $path
-    if (-not (Test-Path $destDir)) {
-        New-Item -Path $destDir -ItemType Directory | Out-Null
+    $destinationDirectory = Split-Path -Path $destinationPath -Parent
+    if (-not (Test-Path -Path $destinationDirectory)) {
+        New-Item -Path $destinationDirectory -ItemType Directory -Force
     }
 
-    # Download the file to the destination
-    Invoke-WebRequest -Uri $url -OutFile $path
-    Write-Host "File downloaded successfully."
+    # Download the file and write it to the destination path
+    $fileContent = Invoke-WebRequest -Uri $fileUrl -UseBasicParsing | Select-Object -ExpandProperty Content
+    Set-Content -Path $destinationPath -Value $fileContent -Force
 }
 
-# Function to set a registry key
-function Set-Registry {
-    param (
-        [string]$key,
-        [string]$name,
-        [string]$value,
-        [string]$type
-    )
-
-    Write-Host "Setting registry key $key, name $name, value $value, type $type..."
-    Set-ItemProperty -Path $key -Name $name -Value $value -PropertyType $type -Force
-    Write-Host "Registry key set successfully."
-}
-
-# Process repositories and files
-foreach ($config in $configJson.configs) {
-    if ($config.repo) {
-        Clone-Repo -url $config.repo.url -path (Invoke-Expression $config.repo.path)
+# Iterate through each config in the JSON
+foreach ($configItem in $config.configs) {
+    # Clone the repository if specified
+    if ($configItem.repo) {
+        $repoUrl = $configItem.repo.url
+        $destinationPath = Invoke-Expression -Command $configItem.repo.path
+        Clone-GitRepo -repoUrl $repoUrl -destinationPath $destinationPath
     }
 
-    if ($config.files) {
-        foreach ($file in $config.files) {
-            Download-File -url $file.url -path (Invoke-Expression $file.path)
+    # Download specific files if specified
+    if ($configItem.files) {
+        foreach ($file in $configItem.files) {
+            $fileUrl = $file.url
+            $destinationPath = Invoke-Expression -Command $file.path
+            Download-File -fileUrl $fileUrl -destinationPath $destinationPath
         }
     }
 }
 
-# Process registry settings
-foreach ($reg in $configJson.registry) {
-    Set-Registry -key $reg.key -name $reg.name -value $reg.value -type $reg.type
-}
-
-Write-Host "All configurations and registry settings have been applied."
+Write-Output "Repositories and files have been successfully configured."

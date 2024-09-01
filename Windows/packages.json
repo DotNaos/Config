@@ -8,16 +8,16 @@
             },
             {
                 "name": "Vscode",
-                "choco": "vscode"
+                "winget": "Microsoft.VisualStudioCode"
             },
             {
                 "name": "Jetbrainstoolbox",
-                "choco": "jetbrainstoolbox",
+                "winget": "JetBrains.Toolbox",
                 "extra": true
             },
             {
                 "name": "Neovim",
-                "choco": "neovim"
+                "winget": "Neovim.Neovim"
             }
         ],
         "CLI": [
@@ -27,11 +27,11 @@
             },
             {
                 "name": "Git",
-                "choco": "git"
+                "winget": "Git.Git"
             },
             {
                 "name": "Msys2",
-                "choco": "msys2"
+                "winget": "MSYS2.MSYS2"
             },
             {
                 "name": "Mingw",
@@ -48,19 +48,19 @@
             },
             {
                 "name": "Rust",
-                "choco": "rust"
+                "winget": "Rustlang.Rust.GNU"
             },
             {
                 "name": "Nodejs",
-                "choco": "nodejs"
+                "winget": "OpenJS.NodeJS"
             },
             {
                 "name": "Oh My Posh",
-                "choco": "oh-my-posh"
+                "winget": "JanDeDobbeleer.OhMyPosh"
             },
             {
                 "name": "Pwsh",
-                "choco": "pwsh"
+                "winget": "Microsoft.PowerShell"
             },
             {
                 "name": "Miktex",
@@ -86,7 +86,7 @@
         "design": [
             {
                 "name": "Orcaslicer",
-                "choco": "orcaslicer"
+                "winget": "SoftFever.OrcaSlicer"
             },
             {
                 "name": "Autodesk Fusion360",
@@ -94,24 +94,24 @@
             },
             {
                 "name": "Blender",
-                "choco": "blender",
+                "winget": "BlenderFoundation.Blender",
                 "extra": true
             },
             {
                 "name": "Figma",
-                "choco": "figma",
+                "winget": "Figma.Figma",
                 "extra": true
             }
         ],
         "games": [
             {
                 "name": "Epicgameslauncher",
-                "choco": "epicgameslauncher",
+                "winget": "EpicGames.EpicGamesLauncher",
                 "extra": true
             },
             {
                 "name": "Steam",
-                "choco": "steam",
+                "winget": "Valve.Steam",
                 "extra": true
             }
         ],
@@ -132,10 +132,13 @@
                 "name": "Apple Music",
                 "winget": "9PFHDD62MXS1"
             },
-
             {
                 "name": "Arc File Transfer",
                 "winget": "9NCBR8HH73DN"
+            },
+            {
+                "name": "Fxsound",
+                "winget": "XP8JK4TBQ03LZ4"
             },
             {
                 "name": "Zen Browser",
@@ -152,7 +155,7 @@
             },
             {
                 "name": "File Converter",
-                "choco": "file-converter"
+                "winget": "AdrienAllard.FileConverter"
             },
             {
                 "name": "Discord",
@@ -160,7 +163,7 @@
             },
             {
                 "name": "Iconviewer",
-                "choco": "iconviewer",
+                "winget": "BotProductions.IconViewer",
                 "extra": true
             },
             {
@@ -168,17 +171,10 @@
                 "winget": "Parsec.Parsec"
             },
             {
-                "name": "Spotify",
-                "choco": "spotify"
-            },
-            {
                 "name": "Nerd Fonts Firacode",
                 "choco": "nerd-fonts-firacode"
             },
-            {
-                "name": "Fxsound",
-                "choco": "fxsound"
-            },
+
             {
                 "name": "1Password Beta",
                 "winget": "AgileBits.1Password.Beta"

@@ -117,12 +117,33 @@
         ],
         "misc": [
             {
+                "name": "Spotify",
+                "winget": "9NCBCSZSJRSB"
+            },
+            {
+                "name": "Whatsapp",
+                "winget": "9NKSQGP7F2NH"
+            },
+            {
+                "name": "Icloud",
+                "winget": "9PKTQ5699M62"
+            },
+            {
+                "name": "Apple Music",
+                "winget": "9PFHDD62MXS1"
+            },
+
+            {
+                "name": "Arc File Transfer",
+                "winget": "9NCBR8HH73DN"
+            },
+            {
                 "name": "Zen Browser",
-                 "directDownload": "https://github.com/zen-browser/desktop/releases/latest/download/zen.installer.exe"
+                "winget": "Zen-Team.Zen-Browser"
             },
             {
                 "name": "Arc Browser",
-                 "directDownload": "https://releases.arc.net/windows/ArcInstaller.exe"
+                 "winget": "TheBrowserCompany.Arc"
             },
             {
                 "name": "Nvidia App",

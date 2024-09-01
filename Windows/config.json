@@ -1,24 +1,40 @@
 {
-    "configs": [
-        {
-            "name": "Dotfiles",
-            "repo": {
-                "url": "https://github.com/DotNaos/dotfiles.git",
-                "path": "$env:USERPROFILE\\Dotfiles"
-            }
-        },
-        {
-            "name": "PowerShell and terminal",
-            "repo": {
-                "url": "https://github.com/DotNaos/powershell-config.git",
-                "path": "$env:USERPROFILE\\Documents\\PowerShell"
-            },
-            "files": [
-                {
-                    "url": "https://raw.githubusercontent.com/DotNaos/powershell-config/main/settings.json",
-                    "path": "$env:USERPROFILE\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState"
-                }
-            ]
-        }
+    "copy_config": [
+      {
+        "description": "Copy VSCode Config",
+        "repoUrl": "https://github.com/DotNaos/vscode-config.git",
+        "localPath": "%APPDATA%\\Code\\User",
+        "requiresCredentials": false
+      },
+      {
+        "description": "Copy Git Config",
+        "repoUrl": "https://github.com/DotNaos/git-config.git",
+        "localPath": "%USERPROFILE%",
+        "requiresCredentials": true,
+        "credentialFile": ".gitconfig",
+        "credentialKeys": ["user.name", "user.email"]
+      },
+      {
+        "description": "Copy PowerShell Profile",
+        "repoUrl": "https://github.com/DotNaos/powershell-config.git",
+        "localPath": "%USERPROFILE%\\Documents\\Powershell",
+        "requiresCredentials": false
+      }
+    ],
+    "registry": [
+      {
+        "description": "Set Dark Mode",
+        "path": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        "name": "AppsUseLightTheme",
+        "value": "0",
+        "valueType": "DWORD"
+      },
+      {
+        "description": "Enable Developer Mode",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock",
+        "name": "AllowDevelopmentWithoutDevLicense",
+        "value": "1",
+        "valueType": "DWORD"
+      }
     ]
-}
+  }

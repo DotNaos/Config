@@ -1,6 +1,10 @@
-# Load the JSON configuration file
-$configFile = (Join-Path $PSScriptRoot 'config.json')
-$configs = Get-Content -Raw -Path $configFile | ConvertFrom-Json
+# URL to the config.json file on GitHub
+$configUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
+
+# Download and parse the config.json
+Write-Host "Downloading config.json from $configUrl..."
+$configContent = Invoke-WebRequest -Uri $configUrl -UseBasicParsing | Select-Object -ExpandProperty Content
+$configs = $configContent | ConvertFrom-Json
 
 # Function to download and extract a GitHub repository
 function Download-GitHubRepo {
@@ -67,14 +71,15 @@ foreach ($config in $configs.configs) {
 
     # If a repository is specified, download and extract it
     if ($config.repo) {
-        Download-GitHubRepo -repoUrl $config.repo.url -destinationPath $config.repo.path
+        $repoPath = Invoke-Expression -Command "$config.repo.path"
+        Download-GitHubRepo -repoUrl $config.repo.url -destinationPath $repoPath
     }
 
     # If individual files are specified, download them
     if ($config.files) {
         foreach ($file in $config.files) {
             $url = $file.url
-            $destinationPath = $file.path
+            $destinationPath = Invoke-Expression -Command "$file.path"
 
             # Ensure the destination directory exists
             if (-not (Test-Path $destinationPath)) {

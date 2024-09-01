@@ -66,7 +66,7 @@ function Set-RegistryValue {
 }
 
 # Main script
-$configJson = Get-Content "config.json" | ConvertFrom-Json
+$configJson = Get-Content "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json" | ConvertFrom-Json
 
 # Process copy_config tasks
 Write-Host "Starting configuration file copy tasks..."

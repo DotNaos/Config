@@ -65,7 +65,7 @@ function Set-RegistryValue {
     Write-Host "Set registry value: $path\$name = $value ($type)"
 }
 # Main script with URL
-$configJson = Get-Content "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json" | ConvertFrom-Json
+$configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
 
 # Process copy_config tasks
 Write-Host "Starting configuration file copy tasks..."

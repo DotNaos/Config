@@ -3,14 +3,14 @@
         {
             "name": "Dotfiles",
             "repo": {
-                "url": "https://github.com/DotNaos/dotfiles",
+                "url": "https://github.com/DotNaos/dotfiles.git",
                 "path": "$env:USERPROFILE\\Dotfiles"
             }
         },
         {
             "name": "PowerShell and terminal",
             "repo": {
-                "url": "https://github.com/DotNaos/powershell-config",
+                "url": "https://github.com/DotNaos/powershell-config.git",
                 "path": "$env:USERPROFILE\\Documents\\PowerShell"
             },
             "files": [

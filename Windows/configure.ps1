@@ -66,7 +66,8 @@ function Set-RegistryValue {
 }
 
 # Main script with URL ?????
-$configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
+
+$configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json" # HALLO ????
 
 # Process copy_config tasks
 Write-Host "Starting configuration file copy tasks..."

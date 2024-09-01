@@ -4,26 +4,26 @@
             "name": "Dotfiles",
             "repo": {
                 "url": "https://github.com/DotNaos/dotfiles.git",
-                "path": "$env:USERPROFILE\\Dotfiles"
+                "path": "$env:USERPROFILE/Dotfiles"
             }
         },
         {
             "name": "PowerShell and terminal",
             "repo": {
                 "url": "https://github.com/DotNaos/powershell-config.git",
-                "path": "$env:USERPROFILE\\Documents\\PowerShell"
+                "path": "$env:USERPROFILE/Documents/PowerShell"
             },
             "files": [
                 {
                     "url": "https://raw.githubusercontent.com/DotNaos/powershell-config/main/settings.json",
-                    "path": "$env:USERPROFILE\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState"
+                    "path": "$env:USERPROFILE/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState"
                 }
             ]
         }
     ],
     "registry": [
         {
-          "key": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "key": "HKCU:/Software/Microsoft/Windows/CurrentVersion/Explorer/Advanced",
           "name": "Hidden",
           "value": "1",
           "type": "DWORD"

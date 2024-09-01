@@ -64,8 +64,7 @@ function Set-RegistryValue {
     New-ItemProperty -Path $path -Name $name -Value $value -PropertyType $type -Force | Out-Null
     Write-Host "Set registry value: $path\$name = $value ($type)"
 }
-
-# Main script
+# Main script with URL
 $configJson = Get-Content "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json" | ConvertFrom-Json
 
 # Process copy_config tasks

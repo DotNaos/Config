@@ -1,47 +1,50 @@
 {
-    "copy_config": [
-      {
-        "description": "Copy VSCode Config",
-        "repoUrl": "https://github.com/yourusername/vscode-config.git",
-        "localPath": "%APPDATA%\\Code\\User",
-        "requiresCredentials": false
-      },
-      {
-        "description": "Copy Git Config",
-        "repoUrl": "https://github.com/yourusername/git-config.git",
-        "localPath": "%USERPROFILE%",
-        "requiresCredentials": true,
-        "credentialFile": ".gitconfig",
-        "credentialKeys": ["user.name", "user.email"]
-      },
-      {
-        "description": "Copy PowerShell Profile",
-        "repoUrl": "https://github.com/yourusername/powershell-profile.git",
-        "localPath": "%USERPROFILE%\\Documents\\WindowsPowerShell",
-        "requiresCredentials": false
-      }
+    "configs": [
+        {
+            "name": "Dotfiles",
+            "repo": {
+                "url": "https://github.com/DotNaos/dotfiles",
+                "path": "$env:USERPROFILE\\Dotfiles"
+            }
+        },
+        {
+            "name": "PowerShell and terminal",
+            "repo": {
+                "url": "https://github.com/DotNaos/powershell-config",
+                "path": "$env:USERPROFILE\\Documents\\PowerShell"
+            },
+            "files": [
+                {
+                    "url": "https://raw.githubusercontent.com/DotNaos/powershell-config/main/settings.json",
+                    "path": "$env:USERPROFILE\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState"
+                }
+            ]
+        }
     ],
     "registry": [
-      {
-        "description": "Set Dark Mode",
-        "path": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
-        "name": "AppsUseLightTheme",
-        "value": "0",
-        "valueType": "DWORD"
-      },
-      {
-        "description": "Enable Developer Mode",
-        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock",
-        "name": "AllowDevelopmentWithoutDevLicense",
-        "value": "1",
-        "valueType": "DWORD"
-      },
-      {
-        "description": "Set User Account Control to never notify",
-        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
-        "name": "EnableLUA",
-        "value": "0",
-        "valueType": "DWORD"
-      }
+        {
+            "description": "Test",
+            "key": "HKCU:\\Software\\MyApp",
+            "values": {
+                "Setting1": {
+                    "type": "String",
+                    "value": "Value1"
+                },
+                "Setting2": {
+                    "type": "DWORD",
+                    "value": "1"
+                }
+            }
+        },
+        {
+            "description": "Test",
+            "key": "HKLM:\\Software\\MyCompany\\MySoftware",
+            "values": {
+                "EnableFeatureX": {
+                    "type": "DWORD",
+                    "value": "1"
+                }
+            }
+        }
     ]
-  }
+}

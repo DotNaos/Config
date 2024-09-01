@@ -36,7 +36,7 @@ foreach ($configItem in $config.configs) {
     # Clone the repository if specified
     if ($configItem.repo) {
         $repoUrl = $configItem.repo.url
-        $destinationPath = Invoke-Expression -Command $configItem.repo.path
+        $destinationPath = Join-Path -Path $env:USERPROFILE -ChildPath $configItem.repo.path.TrimStart('/')
         Clone-GitRepo -repoUrl $repoUrl -destinationPath $destinationPath
     }
 
@@ -44,7 +44,7 @@ foreach ($configItem in $config.configs) {
     if ($configItem.files) {
         foreach ($file in $configItem.files) {
             $fileUrl = $file.url
-            $destinationPath = Invoke-Expression -Command $file.path
+            $destinationPath = Join-Path -Path $env:USERPROFILE -ChildPath $file.path.TrimStart('/')
             Download-File -fileUrl $fileUrl -destinationPath $destinationPath
         }
     }

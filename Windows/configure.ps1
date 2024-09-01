@@ -43,7 +43,7 @@ function Download-File {
 }
 
 # Configure PC
-foreach ($configItem in $config) {
+foreach ($configItem in $config.configs) {
   if ($configItem.repo.url) {
     Download-Repository -Url $configItem.repo.url -Path $configItem.repo.path
   }
@@ -55,14 +55,16 @@ foreach ($configItem in $config) {
 }
 
 # Configure registry
-foreach ($registryItem in $config.registry) {
-  $key = $registryItem.key
-  $name = $registryItem.name
-  $value = $registryItem.value
-  $type = $registryItem.type
+if ($config.registry) {
+  foreach ($registryItem in $config.registry) {
+    $key = $registryItem.key
+    $name = $registryItem.name
+    $value = $registryItem.value
+    $type = $registryItem.type
 
-  if (!(Test-Path -Path $key)) {
-    New-Item -Path $key -ItemType Key -Force
+    if (!(Test-Path -Path $key)) {
+      New-Item -Path $key -ItemType Key -Force
+    }
+    Set-ItemProperty -Path $key -Name $name -Value $value -Type $type -Force
   }
-  Set-ItemProperty -Path $key -Name $name -Value $value -Type $type -Force
 }

@@ -1,115 +1,68 @@
-# URL to the config.json file on GitHub
-$configUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
+# Load configuration from config.json
+$configUrl = 'https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json'
+$config = Invoke-WebRequest -Uri $configUrl -UseBasicParsing | ConvertFrom-Json
 
-# Download and parse the config.json
-Write-Host "Downloading config.json from $configUrl..."
-$configContent = Invoke-WebRequest -Uri $configUrl -UseBasicParsing | Select-Object -ExpandProperty Content
-$configs = $configContent | ConvertFrom-Json
+# Function to download and extract repository
+function Download-Repository {
+  param (
+    [string]$Url,
+    [string]$Path
+  )
 
-# Function to download and extract a GitHub repository
-function Download-GitHubRepo {
-    param (
-        [string]$repoUrl,
-        [string]$destinationPath
-    )
-    
-    # Ensure the destination directory exists
-    if (-not (Test-Path $destinationPath)) {
-        Write-Host "Creating directory $destinationPath"
-        New-Item -ItemType Directory -Force -Path $destinationPath
+  # Download repository
+  $repoName = $Url.Split('/')[-1]
+  $repoPath = Join-Path -Path $Path -ChildPath $repoName
+  if (Test-Path -Path $repoPath) {
+    Remove-Item -Path $repoPath -Recurse -Force
+  }
+  git clone $Url $repoPath
+
+  # Copy files to destination path
+  $files = Get-ChildItem -Path $repoPath -Recurse -File
+  foreach ($file in $files) {
+    $destPath = Join-Path -Path $Path -ChildPath ($file.FullName -replace [regex]::Escape($repoPath))
+    $destDir = Split-Path -Path $destPath -Parent
+    if (!(Test-Path -Path $destDir)) {
+      New-Item -Path $destDir -ItemType Directory -Force
     }
-
-    # Construct the URL to download the repo as a ZIP file
-    $zipUrl = "$repoUrl/archive/refs/heads/main.zip"
-    $zipFile = Join-Path $env:TEMP ('repo.zip')
-
-    # Download the ZIP file
-    Write-Host "Downloading repository from $repoUrl..."
-    Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing
-
-    # Extract the ZIP file
-    Write-Host "Extracting to $destinationPath..."
-    Expand-Archive -Path $zipFile -DestinationPath $destinationPath -Force
-
-    # Move contents from the extracted folder to the final destination if needed
-    $extractedFolder = Join-Path $destinationPath (Get-ChildItem -Path $destinationPath | Select-Object -First 1).Name
-    Move-Item -Path "$extractedFolder\*" -Destination $destinationPath -Force
-
-    # Cleanup: Remove the extracted folder and zip file
-    Remove-Item -Path $extractedFolder -Recurse -Force
-    Remove-Item -Path $zipFile -Force
-
-    Write-Host "Repository has been downloaded and extracted to $destinationPath."
+    Copy-Item -Path $file.FullName -Destination $destPath -Force
+  }
 }
 
-# Function to set registry values
-function Set-RegistryValues {
-    param (
-        [string]$key,
-        [hashtable]$values
-    )
-    
-    # Ensure the registry key exists
-    if (-not (Test-Path $key)) {
-        Write-Host "Creating registry key $key"
-        New-Item -Path $key -Force
-    }
+# Function to download file
+function Download-File {
+  param (
+    [string]$Url,
+    [string]$Path
+  )
 
-    # Set each value in the registry key
-    foreach ($name in $values.Keys) {
-        $valueType = $values[$name].type
-        $valueData = $values[$name].value
-
-        Write-Host "Setting registry value $name of type $valueType with data $valueData in key $key"
-        Set-ItemProperty -Path $key -Name $name -Value $valueData -PropertyType $valueType -Force
-    }
+  # Download file
+  $fileName = $Url.Split('/')[-1]
+  $filePath = Join-Path -Path $Path -ChildPath $fileName
+  Invoke-WebRequest -Uri $Url -OutFile $filePath
 }
 
-# Loop through each configuration in the JSON
-foreach ($config in $configs.configs) {
-    Write-Host "Processing $($config.name) configuration..."
-
-    # If a repository is specified, download and extract it
-    if ($config.repo) {
-        $repoPath = Invoke-Expression -Command "$config.repo.path"
-        Download-GitHubRepo -repoUrl $config.repo.url -destinationPath $repoPath
+# Configure PC
+foreach ($configItem in $config) {
+  if ($configItem.repo.url) {
+    Download-Repository -Url $configItem.repo.url -Path $configItem.repo.path
+  }
+  if ($configItem.files) {
+    foreach ($file in $configItem.files) {
+      Download-File -Url $file.url -Path $file.path
     }
-
-    # If individual files are specified, download them
-    if ($config.files) {
-        foreach ($file in $config.files) {
-            $url = $file.url
-            $destinationPath = Invoke-Expression -Command "$file.path"
-
-            # Ensure the destination directory exists
-            if (-not (Test-Path $destinationPath)) {
-                Write-Host "Creating directory $destinationPath"
-                New-Item -ItemType Directory -Force -Path $destinationPath
-            }
-
-            # Extract the filename from the URL
-            $filename = Split-Path $url -Leaf
-
-            # Define the full path where the file will be saved
-            $destinationFile = Join-Path $destinationPath $filename
-
-            # Download the file
-            Write-Host "Downloading $filename from $url..."
-            Invoke-WebRequest -Uri $url -OutFile $destinationFile -UseBasicParsing
-
-            Write-Host "$filename has been downloaded and copied to $destinationPath."
-        }
-    }
+  }
 }
 
-# Apply registry configurations if specified
-if ($configs.registry) {
-    foreach ($regConfig in $configs.registry) {
-        $key = $regConfig.key
-        $values = $regConfig.values
+# Configure registry
+foreach ($registryItem in $config.registry) {
+  $key = $registryItem.key
+  $name = $registryItem.name
+  $value = $registryItem.value
+  $type = $registryItem.type
 
-        Set-RegistryValues -key $key -values $values
-    }
+  if (!(Test-Path -Path $key)) {
+    New-Item -Path $key -ItemType Key -Force
+  }
+  Set-ItemProperty -Path $key -Name $name -Value $value -Type $type -Force
 }
-
-Write-Host "Configuration setup complete."

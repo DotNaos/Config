@@ -4,19 +4,19 @@
       "name": "Dotfiles",
       "repo": {
         "url": "https://github.com/DotNaos/dotfiles.git",
-        "path": "$env:USERPROFILE\\Dotfiles"
+        "path": "%USERPROFILE%\\Dotfiles"
       }
     },
     {
       "name": "PowerShell and terminal",
       "repo": {
         "url": "https://github.com/DotNaos/powershell-config.git",
-        "path": "$env:USERPROFILE\\Documents\\PowerShell"
+        "path": "%USERPROFILE%\\Documents\\PowerShell"
       },
       "files": [
         {
           "url": "https://raw.githubusercontent.com/DotNaos/powershell-config/main/settings.json",
-          "path": "$env:USERPROFILE\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState"
+          "path": "%USERPROFILE%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState"
         }
       ]
     }

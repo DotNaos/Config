@@ -11,6 +11,10 @@
                 "winget": "Microsoft.VisualStudioCode"
             },
             {
+                "name": "Cursor",
+                "winget": "Anysphere.Cursor"
+            },
+            {
                 "name": "Jetbrainstoolbox",
                 "winget": "JetBrains.Toolbox",
                 "extra": true

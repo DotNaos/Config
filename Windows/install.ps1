@@ -113,7 +113,7 @@ function Install-SinglePackage {
     $userFlag = if ($userInstall) {
         switch ($manager) {
             "choco" { "--user" }
-            "winget" { "--user" }
+            "winget" { "" } # Winget installs based on elevation of the current shell
             "scoop" { "" }  # Scoop always installs for the current user
             default { "" }
         }
@@ -127,7 +127,7 @@ function Install-SinglePackage {
                 Write-Host "Skipping ${packageId}: Chocolatey requires admin privileges for system-wide installations." -ForegroundColor Yellow
             }
         }
-        "winget" { winget install -e --id $packageId $userFlag }
+        "winget" { winget install $packageId $userFlag }
         "scoop" { scoop install $packageId }
     }
 }

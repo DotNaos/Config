@@ -11,7 +11,7 @@
       "name": "PowerShell and terminal",
       "repo": {
         "url": "https://github.com/DotNaos/powershell-config.git",
-        "path": "%USERPROFILE%\\Documents\\PowerShell"
+        "path": "%USERPROFILE%\\OneDrive\\Documents\\PowerShell"
       },
       "files": [
         {

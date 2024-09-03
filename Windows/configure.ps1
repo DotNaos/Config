@@ -1,90 +1,64 @@
-# PC Configuration Script
-
-# Function to download and copy config files
-function Copy-ConfigFiles {
-    param (
-        [string]$repoUrl,
-        [string]$localPath
-    )
-    
-    $expandedPath = [System.Environment]::ExpandEnvironmentVariables($localPath)
-    
-    # Clone the repository
-    Write-Host "Cloning repository from $repoUrl to temp directory..."
-    git clone $repoUrl temp_repo
-    
-    # Create the destination directory if it doesn't exist
-    if (!(Test-Path $expandedPath)) {
-        New-Item -Path $expandedPath -ItemType Directory -Force | Out-Null
-        Write-Host "Created directory: $expandedPath"
-    }
-    
-    # Copy files to the specified local path
-    Write-Host "Copying files to $expandedPath..."
-    Copy-Item -Path "temp_repo\*" -Destination $expandedPath -Recurse -Force
-    
-    # Clean up
-    Remove-Item -Path "temp_repo" -Recurse -Force
-    Write-Host "Cleaned up temporary files."
+# Function to download a file from a URL
+function Download-File($url, $outputPath) {
+    Invoke-WebRequest -Uri $url -OutFile $outputPath
 }
 
-# Function to prompt for credentials and update config files
-function Update-ConfigWithCredentials {
-    param (
-        [string]$configPath,
-        [string[]]$credentialKeys
-    )
-    
-    $expandedPath = [System.Environment]::ExpandEnvironmentVariables($configPath)
-    $content = Get-Content $expandedPath -Raw
-    
-    foreach ($key in $credentialKeys) {
-        $value = Read-Host "Enter value for $key"
-        $content = $content -replace "{{$key}}", $value
-    }
-    
-    $content | Set-Content $expandedPath
-    Write-Host "Updated configuration file with credentials: $expandedPath"
+# Function to clone a GitHub repository
+function Clone-Repository($url, $outputPath) {
+    git clone $url $outputPath
 }
 
-# Function to modify registry
-function Set-RegistryValue {
-    param (
-        [string]$path,
-        [string]$name,
-        [string]$value,
-        [string]$type
-    )
-    
-    if (!(Test-Path $path)) {
-        New-Item -Path $path -Force | Out-Null
-        Write-Host "Created new registry key: $path"
-    }
-    
-    New-ItemProperty -Path $path -Name $name -Value $value -PropertyType $type -Force | Out-Null
-    Write-Host "Set registry value: $path\$name = $value ($type)"
+# Function to expand environment variables in a path
+function Expand-EnvPath($path) {
+    return [System.Environment]::ExpandEnvironmentVariables($path)
 }
 
-# Main script with URL ?????
+# Download the config.json file
+$configUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
+$configPath = Join-Path $env:TEMP "config.json"
+Download-File $configUrl $configPath
 
-$configJson = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json" # HALLO ????
+# Read the config.json file
+$config = Get-Content $configPath | ConvertFrom-Json
 
-# Process copy_config tasks
-Write-Host "Starting configuration file copy tasks..."
-foreach ($task in $configJson.copy_config) {
-    Write-Host "Processing task: $($task.description)"
-    Copy-ConfigFiles -repoUrl $task.repoUrl -localPath $task.localPath
-    if ($task.requiresCredentials) {
-        $fullPath = Join-Path $task.localPath $task.credentialFile
-        Update-ConfigWithCredentials -configPath $fullPath -credentialKeys $task.credentialKeys
+# Process each configuration item
+foreach ($item in $config.configs) {
+    Write-Host "Processing configuration: $($item.name)"
+    
+    # Handle repository
+    if ($item.repo) {
+        $repoUrl = $item.repo.url
+        $repoPath = Expand-EnvPath $item.repo.path
+        
+        # Create the destination directory if it doesn't exist
+        if (-not (Test-Path $repoPath)) {
+            New-Item -ItemType Directory -Path $repoPath -Force
+        }
+        
+        Clone-Repository $repoUrl $repoPath
+        Write-Host "Cloned repository: $repoUrl to $repoPath"
+    }
+    
+    # Handle individual files
+    if ($item.files) {
+        foreach ($file in $item.files) {
+            $fileUrl = $file.url
+            $filePath = Expand-EnvPath $file.path
+            $fileName = Split-Path $fileUrl -Leaf
+            $outputPath = Join-Path $filePath $fileName
+            
+            # Create the destination directory if it doesn't exist
+            if (-not (Test-Path $filePath)) {
+                New-Item -ItemType Directory -Path $filePath -Force
+            }
+            
+            Download-File $fileUrl $outputPath
+            Write-Host "Downloaded file: $fileUrl to $outputPath"
+        }
     }
 }
 
-# Process registry tasks
-Write-Host "`nStarting registry modification tasks..."
-foreach ($task in $configJson.registry) {
-    Write-Host "Processing task: $($task.description)"
-    Set-RegistryValue -path $task.path -name $task.name -value $task.value -type $task.valueType
-}
+Write-Host "Configuration complete!"
 
-Write-Host "`nPC configuration completed successfully!"
+# Clean up the temporary config file
+Remove-Item $configPath

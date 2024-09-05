@@ -13,7 +13,7 @@
 > [!Warning]
 > Run as Administrator
 
-1. [Debloat Windows 11](https://github.com/Raphire/Win11Debloat)
+1. [Debloat Windows 11 Tool (Also available in config)](https://github.com/Raphire/Win11Debloat)
 ```pwsh
 & ([scriptblock]::Create((irm "https://win11debloat.raphi.re/")))
 ```
@@ -24,7 +24,7 @@ Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Dot
 ```
 
 ### Configuration
-1. Copy config files and configure ( WIP )
+1. Copy config files and configure
 ```pwsh
 Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DotNaos/config/main/Windows/configure.ps1" -UseBasicParsing).Content
 ```

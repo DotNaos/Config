@@ -1,4 +1,54 @@
 {
+  "debloat": {
+    "appsToRemove": [
+      "Microsoft.3DBuilder",
+      "Microsoft.BingWeather",
+      "Microsoft.WindowsAlarms",
+      "Microsoft.WindowsCalculator",
+      "Microsoft.WindowsCamera",
+      "Microsoft.GetHelp",
+      "Microsoft.Getstarted",
+      "Microsoft.WindowsFeedbackHub",
+      "Microsoft.WindowsMaps",
+      "Microsoft.WindowsSoundRecorder",
+      "Microsoft.ZuneMusic",
+      "Microsoft.ZuneVideo"
+    ],
+    "removePinnedApps": true
+  },
+  "windowsSettings": [
+    {
+      "name": "AppsUseLightTheme",
+      "path": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+      "value": 0
+    },
+    {
+      "name": "HideFileExt",
+      "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+      "value": 0
+    },
+    {
+      "name": "EnableClipboardHistory",
+      "path": "HKCU:\\Software\\Microsoft\\Clipboard",
+      "value": 1
+    },
+    {
+      "name": "AllowTelemetry",
+      "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+      "value": 0
+    },
+    {
+      "name": "AllowCortana",
+      "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+      "value": 0
+    }
+  ],
+  "optionalFeatures": [
+    "Microsoft-Windows-Subsystem-Linux",
+    "VirtualMachinePlatform",
+    "Microsoft-Hyper-V-All",
+    "Containers-DisposableClientVM"
+  ],
   "configs": [
     {
       "name": "PowerShell and terminal",
@@ -32,7 +82,7 @@
         "path": "%USERPROFILE%\\AppData\\Local\\nvim"
       },
       "postCommands": [
-        "Write-Host 'Configuration process completed. Performing final steps...' -ForegroundColor Cyan"
+        "Write-Host 'Neovim configuration completed.' -ForegroundColor Cyan"
       ]
     }
   ]

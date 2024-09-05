@@ -80,6 +80,10 @@
         {
           "url": "https://raw.githubusercontent.com/DotNaos/vscode-config/main/settings.json",
           "path": "%USERPROFILE%\\AppData\\Roaming\\Code\\User"
+        },
+        {
+          "url": "https://github.com/DotNaos/vscode-config/raw/main/res/GeistMonoVF.ttf",
+          "path": "C:\\Windows\\Fonts"
         }
       ]
     },

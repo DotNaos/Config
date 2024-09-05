@@ -30,6 +30,10 @@
                 "choco": "chocolatey-core.extension"
             },
             {
+                "name": "Sudo",
+                "winget": "gerardog.gsudo"
+            },
+            {
                 "name": "Git",
                 "winget": "Git.Git"
             },

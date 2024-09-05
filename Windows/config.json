@@ -13,8 +13,7 @@
       "Microsoft.WindowsSoundRecorder",
       "Microsoft.ZuneMusic",
       "Microsoft.ZuneVideo"
-    ],
-    "removePinnedApps": true
+    ]
   },
   "windowsSettings": [
     {
@@ -38,11 +37,6 @@
       "value": 0
     },
     {
-      "name": "AllowCortana",
-      "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
-      "value": 0
-    },
-    {
       "name": "StickyKeys",
       "path": "HKCU:\\Control Panel\\Accessibility\\StickyKeys",
       "value": 0
@@ -61,10 +55,17 @@
   ],
   "configs": [
     {
+      "name": "Breeze Cursor",
+      "repo": {
+        "url": "https://github.com/black7375/Breeze-Cursors-for-Windows.git",
+        "path": "%USERPROFILE%\\Downloads\\res"
+      }
+    },
+    {
       "name": "PowerShell and terminal",
       "repo": {
         "url": "https://github.com/DotNaos/powershell-config.git",
-        "path": "%USERPROFILE%\\OneDrive\\Documents\\PowerShell"
+        "path": "%Onedrive%\\Documents\\PowerShell"
       },
       "files": [
         {
@@ -77,7 +78,7 @@
       "name": "Vscode",
       "repo": {
         "url": "https://github.com/DotNaos/vscode-config.git",
-        "path": ""
+        "path": "%USERPROFILE%\\AppData\\Roaming\\Code\\User"
       }
     },
     {

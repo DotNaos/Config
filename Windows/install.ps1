@@ -52,7 +52,7 @@ function Invoke-WingetCommand {
         Write-Host "Winget not found. Please ensure it's installed correctly." -ForegroundColor Red
         return
     }
-    $scriptBlock = [Scriptblock]::Create("& '$wingetPath' $Command")
+    $scriptBlock = [Scriptblock]::Create("& '$wingetPath' $Command --accept-source-agreements --accept-package-agreements --force")
     
     if (Test-Admin) {
         Start-Process powershell.exe -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $scriptBlock -Wait -WindowStyle Hidden

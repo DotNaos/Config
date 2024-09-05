@@ -90,43 +90,29 @@ function Enable-OptionalFeatures($features) {
 
 # Main script execution starts here
 
-# Default config URL
-$defaultConfigUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
-
-$customConfig = Read-Host "Enter a URL or local file path for a custom config.json (or press Enter for default)"
-
-if ([string]::IsNullOrWhiteSpace($customConfig)) {
-    $configUrl = $defaultConfigUrl
-    $configPath = Join-Path $env:TEMP "config.json"
-    Write-Host "Using default config file from $configUrl" -ForegroundColor Cyan
-    Download-File $configUrl $configPath
-}
-elseif ($customConfig -match '^https?://') {
-    $configUrl = $customConfig
-    $configPath = Join-Path $env:TEMP "config.json"
-    Write-Host "Downloading custom config file from $configUrl" -ForegroundColor Cyan
-    Download-File $configUrl $configPath
-}
-else {
-    $configPath = $customConfig -replace '[()]', ''  # Remove parentheses
-    $configPath = Expand-EnvPath $configPath
-    if (Test-Path $configPath) {
-        Write-Host "Using local config file: $configPath" -ForegroundColor Cyan
-    }
-    else {
-        Write-Host "Error: Local config file not found at $configPath" -ForegroundColor Red
-        exit
-    }
+# Prompt for JSON file location
+$jsonUrl = Read-Host "Enter the URL or local path to the config.json file (press Enter for default)"
+if ([string]::IsNullOrWhiteSpace($jsonUrl)) {
+    $jsonUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
 }
 
-# Read the config.json file
+# Download or read the JSON file
 try {
-    $config = Get-Content $configPath -Raw | ConvertFrom-Json
-    Write-Host "Successfully loaded config.json" -ForegroundColor Green
-}
-catch {
-    Write-Host "Error parsing config.json: $_" -ForegroundColor Red
-    exit
+    Write-Host "Fetching config information..." -ForegroundColor Cyan
+    if ($jsonUrl -like "http*") {
+        $config = Invoke-WebRequest -Uri $jsonUrl | ConvertFrom-Json
+    } else {
+        # Remove any surrounding quotes if present
+        $jsonUrl = $jsonUrl.Trim('"')
+        if (Test-Path $jsonUrl) {
+            $config = Get-Content $jsonUrl -Raw | ConvertFrom-Json
+        } else {
+            throw "File not found: $jsonUrl"
+        }
+    }
+    Write-Host "Config information retrieved successfully." -ForegroundColor Green
+} catch {
+    Exit-WithMessage "Error: Unable to read or download the JSON file. Please check the URL or file path and try again. Error details: $_"
 }
 
 # Debloat Windows

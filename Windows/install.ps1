@@ -4,6 +4,12 @@ function Test-Admin {
     $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 
+# Function to refresh environment variables
+function Update-SessionEnvironment {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+    Write-Host "Environment variables refreshed." -ForegroundColor Green
+}
+
 # Function to install Winget
 function Install-Winget {
     Write-Host "Installing Winget..."
@@ -14,6 +20,7 @@ function Install-Winget {
     Add-AppxPackage -Path $latestWingetMsixBundle
     Remove-Item $latestWingetMsixBundle
     Write-Host "Winget installation complete." -ForegroundColor Green
+    Update-SessionEnvironment
 }
 
 # Function to install Chocolatey
@@ -23,6 +30,11 @@ function Install-Chocolatey {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     Write-Host "Chocolatey installation complete." -ForegroundColor Green
+    Update-SessionEnvironment
+    # Import Chocolatey profile to use refreshenv
+    $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
+    Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+    refreshenv
 }
 
 # Function to run Winget commands in a non-elevated context
@@ -30,7 +42,16 @@ function Invoke-WingetCommand {
     param (
         [string]$Command
     )
-    $wingetPath = (Get-Command winget.exe).Source
+    $wingetPath = (Get-Command winget.exe -ErrorAction SilentlyContinue).Source
+    if (-not $wingetPath) {
+        Write-Host "Winget not found in PATH. Attempting to find it..." -ForegroundColor Yellow
+        $wingetPath = "${env:ProgramFiles}\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\winget.exe"
+        $wingetPath = Resolve-Path $wingetPath -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -First 1
+    }
+    if (-not $wingetPath) {
+        Write-Host "Winget not found. Please ensure it's installed correctly." -ForegroundColor Red
+        return
+    }
     $scriptBlock = [Scriptblock]::Create("& '$wingetPath' $Command")
     
     if (Test-Admin) {
@@ -63,12 +84,19 @@ try {
     if ($jsonUrl -like "http*") {
         $jsonContent = Invoke-WebRequest -Uri $jsonUrl | ConvertFrom-Json
     } else {
-        $jsonContent = Get-Content $jsonUrl -Raw | ConvertFrom-Json
+        # Remove any surrounding quotes if present
+        $jsonUrl = $jsonUrl.Trim('"')
+        if (Test-Path $jsonUrl) {
+            $jsonContent = Get-Content $jsonUrl -Raw | ConvertFrom-Json
+        } else {
+            throw "File not found: $jsonUrl"
+        }
     }
     Write-Host "Package information retrieved successfully." -ForegroundColor Green
 } catch {
-    Exit-WithMessage "Error: Unable to read or download the JSON file. Please check the URL or file path and try again."
+    Exit-WithMessage "Error: Unable to read or download the JSON file. Please check the URL or file path and try again. Error details: $_"
 }
+
 
 # Prompt for package manager
 $packageManager = Read-Host "Choose a package manager (winget/choco/direct)"
@@ -94,6 +122,10 @@ if ($packageManager -eq "winget") {
         Install-Chocolatey
     } else {
         Write-Host "Chocolatey is already installed." -ForegroundColor Green
+        # Ensure Chocolatey profile is imported for existing installation
+        $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
+        Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+        refreshenv
     }
 } elseif ($packageManager -eq "direct") {
     Write-Host "Using direct downloads." -ForegroundColor Green

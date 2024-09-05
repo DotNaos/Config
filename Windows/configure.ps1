@@ -93,10 +93,8 @@ function Enable-OptionalFeatures($features) {
 # Default config URL
 $defaultConfigUrl = "https://raw.githubusercontent.com/DotNaos/Config/main/Windows/config.json"
 
-# Prompt user for custom config file
 $customConfig = Read-Host "Enter a URL or local file path for a custom config.json (or press Enter for default)"
 
-# Set the config path
 if ([string]::IsNullOrWhiteSpace($customConfig)) {
     $configUrl = $defaultConfigUrl
     $configPath = Join-Path $env:TEMP "config.json"
@@ -110,7 +108,8 @@ elseif ($customConfig -match '^https?://') {
     Download-File $configUrl $configPath
 }
 else {
-    $configPath = Expand-EnvPath $customConfig
+    $configPath = $customConfig -replace '[()]', ''  # Remove parentheses
+    $configPath = Expand-EnvPath $configPath
     if (Test-Path $configPath) {
         Write-Host "Using local config file: $configPath" -ForegroundColor Cyan
     }

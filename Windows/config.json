@@ -41,6 +41,16 @@
       "name": "AllowCortana",
       "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
       "value": 0
+    },
+    {
+      "name": "StickyKeys",
+      "path": "HKCU:\\Control Panel\\Accessibility\\StickyKeys",
+      "value": 0
+    },
+    {
+      "name": "EnableLUA",
+      "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "value": 0
     }
   ],
   "optionalFeatures": [

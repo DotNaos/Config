@@ -85,6 +85,9 @@
           "url": "https://github.com/DotNaos/vscode-config/raw/main/res/GeistMonoVF.ttf",
           "path": "C:\\Windows\\Fonts"
         }
+      ],
+      "postCommands": [
+        "reg add "HKLM\SOFTWARE\\Microsoft\Windows NT\CurrentVersion\Fonts" /v "FontName (TrueType)" /t REG_SZ /d C:\\Windows\\Fonts\\GeistMonoVF.ttf /f"
       ]
     },
     {

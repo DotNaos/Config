@@ -87,7 +87,7 @@
         }
       ],
       "postCommands": [
-        "reg add 'HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' /v 'FontName (TrueType)' /t REG_SZ /d C:\\Windows\\Fonts\\GeistMonoVF.ttf /f"
+        "reg add 'HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' /v 'GeistMono' /t REG_SZ /d C:\\Windows\\Fonts\\GeistMonoVF.ttf /f"
       ]
     },
     {

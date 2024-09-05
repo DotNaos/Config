@@ -47,8 +47,7 @@
             },
             {
                 "name": "Python",
-                "winget": "Python.Python.3.12",
-                 "userInstall": true
+                "winget": "Python.Python.3.12"
             },
             {
                 "name": "Rust",

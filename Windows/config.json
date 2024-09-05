@@ -76,10 +76,12 @@
     },
     {
       "name": "Vscode",
-      "repo": {
-        "url": "https://github.com/DotNaos/vscode-config.git",
-        "path": "%USERPROFILE%\\AppData\\Roaming\\Code\\User"
-      }
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/DotNaos/vscode-config/main/settings.json",
+          "path": "%USERPROFILE%\\AppData\\Roaming\\Code\\User"
+        }
+      ]
     },
     {
       "name": "Neovim",

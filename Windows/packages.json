@@ -148,6 +148,10 @@
                 "winget": "XP8JK4TBQ03LZ4"
             },
             {
+                "name": "Flux Blue light Filter",
+                "winget": "flux.flux"
+            },
+            {
                 "name": "Zen Browser",
                 "winget": "Zen-Team.Zen-Browser"
             },

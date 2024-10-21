@@ -32,7 +32,8 @@ Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Dot
 > [!Warning]
 > Here are fixes for common problems
 - [Time not in sync after OS switch](https://answers.microsoft.com/en-us/windows/forum/all/automatic-windows-resync-time-after-reboot-setup/7a762b13-6a90-4731-9287-bdab328da78c) -> Enable Windows time Service to start automatically 
- 
+- Powershell always in Admin Mode -> Turn UAC back on
+
 ## Linux
 > Common Problems
 - [Add Windows to Grub Boot](https://youtu.be/xBPn0fF8bTY?si=NY1biG0l_pI7pWGs)

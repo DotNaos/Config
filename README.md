@@ -1,44 +1,49 @@
-<h1>TODO: SWITCH TO ANSIBLE</h1>
+# LEGACY / DEPRECATED — DO NOT EXECUTE
 
-<h1>Config</h1>
+This repository is a historical record of an old, poorly engineered configuration experiment. **Nothing in this repository should be executed, downloaded, or copied as-is.** It is not a supported installer, configuration source, or security baseline.
 
-<!-- TODO: -->
+New work belongs in [DotNaos/systems](https://github.com/DotNaos/systems) and user-level configuration belongs in [DotNaos/dotfiles](https://github.com/DotNaos/dotfiles). Those repositories are the migration destinations; this repository is retained only long enough to review the intent captured below.
 
-<!-- Fix user install in install script -->
-<!-- In Configuration script, prompt the user for credentials like github name, email etc. and the files are then created. -->
-<!-- Incorporate the common fixes into the config script.  -->
-<!-- https://github.com/black7375/Breeze-Cursors-for-Windows Breeze Cursor in Config-->
+## Migration inventory
 
-## Windows
-### Installation
+Every tracked file at the start of this migration is listed here. The classification describes where the useful intent belongs, not a recommendation to port the old implementation.
 
-> [!Warning]
-> Run as Administrator
+| Historical file | Classification | Intent worth preserving / disposition |
+| --- | --- | --- |
+| `README.md` | rewrite in systems | Keep the distinction between machine setup, user configuration, and platform-specific notes, but replace the old install walkthrough with maintained documentation and safe, reviewed entry points. |
+| `Linux/install.sh` | discard | This was only a `WIP` placeholder with no executable implementation. It provided no migration value. |
+| `Windows/config.bak.json` | discard | Backup of a duplicated configuration definition. It adds no authoritative intent and should not be revived. |
+| `Windows/config.json` | rewrite in systems | Preserve the high-level intent of optional Windows setup: a deliberately reviewed set of privacy, accessibility, shell, and virtualization preferences. Re-evaluate every setting, especially security-sensitive registry changes, before implementing it. |
+| `Windows/configure.ps1` | rewrite in systems | Preserve the idea of an explicit, inspectable Windows provisioning workflow with clear stages for settings, optional features, and references to separate configuration repositories. Rebuild it with pinned, reviewed inputs, safe defaults, validation, idempotence, and explicit confirmation for destructive changes. |
+| `Windows/install.ps1` | rewrite in systems | Preserve the idea of profile-aware software provisioning and package categories. Rebuild it around a reviewed profile manifest and a single controlled package source; do not port the interactive manager selection, remote execution, or direct-download behavior. |
+| `Windows/packages.json` | rewrite in systems | Preserve only the historical category/intent signal: development tools, CLI tools, design tools, games, and miscellaneous applications. Packages require per-profile review; this list is not an approved current package set and must not be copied wholesale. |
+| `res/dotfiles/.gitconfig` | discard | Empty placeholder with no configuration to migrate. Git identity and other user settings belong in the reviewed dotfiles repository. |
 
-1. [Debloat Windows 11 Tool (Also available in config)](https://github.com/Raphire/Win11Debloat)
-```pwsh
-& ([scriptblock]::Create((irm "https://win11debloat.raphi.re/")))
-```
+### Package categories are historical intent only
 
-2. Install packages 
-```pwsh
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DotNaos/config/main/Windows/install.ps1" -UseBasicParsing).Content
-```
+The old package list groups applications into `dev`, `CLI`, `design`, `games`, and `misc`. These labels may help start a profile discussion, but they do not establish that any old package is still wanted, current, safe, licensed, or compatible. Review each package per user profile, platform, and purpose before adding it to [DotNaos/systems](https://github.com/DotNaos/systems); remove anything without a current decision.
 
-### Configuration
-1. Copy config files and configure
-```pwsh
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DotNaos/config/main/Windows/configure.ps1" -UseBasicParsing).Content
-```
+## Security and maintenance rejection list
 
-> [!Warning]
-> Here are fixes for common problems
-- [Time not in sync after OS switch](https://answers.microsoft.com/en-us/windows/forum/all/automatic-windows-resync-time-after-reboot-setup/7a762b13-6a90-4731-9287-bdab328da78c) -> Enable Windows time Service to start automatically 
-- Powershell always in Admin Mode -> Turn UAC back on
+The following historical choices are explicitly rejected and must not be migrated literally:
 
-## Linux
-> Common Problems
-- [Add Windows to Grub Boot](https://youtu.be/xBPn0fF8bTY?si=NY1biG0l_pI7pWGs)
+- `EnableLUA = 0` disables User Account Control. It weakens Windows security and must not be reproduced.
+- The old README and scripts download-and-execute arbitrary remote content, including `Invoke-Expression`, `ScriptBlock::Create`, and unpinned raw URLs. Remote scripts must never be executed as an installation shortcut.
+- Downloads are not pinned to reviewed versions, hashes, signatures, or immutable sources. Any replacement must establish an auditable trust and update process.
+- Interactive package-manager and category selection makes automation non-repeatable and difficult to review. Profile choices belong in reviewed, versioned data rather than prompts with implicit defaults.
+- This repository duplicated configuration that belongs in separate systems and dotfiles repositories. Do not create another competing source of truth.
+- `config.bak.json` was a backup tracked beside the active config; backup files do not belong in the maintained configuration source.
+- `Linux/install.sh` and `res/dotfiles/.gitconfig` were empty or placeholder artifacts and are discarded rather than treated as migration targets.
 
-## ( MACOS )
-( WIP )
+We have not run the historical scripts and must not mutate system settings while reviewing them.
+
+## Archive criteria
+
+Archive this repository only after all of the following are true:
+
+1. Replacement decisions for each inventory item have been reviewed in the destination repository.
+2. Wanted intent has been reimplemented and tested through the maintained systems and dotfiles workflows.
+3. Historical references are no longer needed for execution, onboarding, or migration verification.
+4. The destination repositories document any intentional omissions and the review is complete.
+
+Until then, keep the remaining historical scripts and package list available as inventory evidence, but treat them as deprecated source material only.
